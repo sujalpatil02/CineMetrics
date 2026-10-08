@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: cinemetrics
+    runtime: docker
+    plan: free
+    healthCheckPath: /api/health
+    envVars:
+      - key: TMDB_KEY
+        sync: false          # you paste your TMDB key in the Render dashboard
+      - key: ADMIN_TOKEN
+        generateValue: true  # Render creates a secret; find it under Environment
+    # Paid plans only: keep the database across restarts by uncommenting
+    # disk:
+    #   name: cm-data
+    #   mountPath: /app/data
+    #   sizeGB: 1

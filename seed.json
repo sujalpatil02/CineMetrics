@@ -1,0 +1,273 @@
+{
+ "base": [
+  {
+   "n": "Inception",
+   "y": 2010,
+   "g": "Sci-Fi",
+   "d": "C. Nolan",
+   "b": 160,
+   "gr": 836,
+   "im": 8.8,
+   "rt": 87,
+   "mc": 74,
+   "au": 91,
+   "rn": 148,
+   "os": 4,
+   "rev": [
+    "Brilliant acting and a clever plot. The visuals and music are stunning.",
+    "The ending was confusing but the story kept me hooked.",
+    "Slow middle act, yet the score is amazing."
+   ]
+  },
+  {
+   "n": "Interstellar",
+   "y": 2014,
+   "g": "Sci-Fi",
+   "d": "C. Nolan",
+   "b": 165,
+   "gr": 773,
+   "im": 8.7,
+   "rt": 73,
+   "mc": 74,
+   "au": 86,
+   "rn": 169,
+   "os": 1,
+   "rev": [
+    "Beautiful visuals and a moving score, but the plot is overlong and confusing.",
+    "The acting was powerful and emotional, a great story about love.",
+    "Some dialogue is bad and hard to hear."
+   ]
+  },
+  {
+   "n": "The Dark Knight",
+   "y": 2008,
+   "g": "Action",
+   "d": "C. Nolan",
+   "b": 185,
+   "gr": 1006,
+   "im": 9,
+   "rt": 94,
+   "mc": 84,
+   "au": 94,
+   "rn": 152,
+   "os": 2,
+   "rev": [
+    "Incredible performance by the cast, a dark and gripping story.",
+    "Great action and superb cinematography, not boring at all.",
+    "The plot is a bit messy but the acting is excellent."
+   ]
+  },
+  {
+   "n": "Parasite",
+   "y": 2019,
+   "g": "Thriller",
+   "d": "Bong J.",
+   "b": 15.5,
+   "gr": 263,
+   "im": 8.5,
+   "rt": 99,
+   "mc": 97,
+   "au": 90,
+   "rn": 132,
+   "os": 4,
+   "rev": [
+    "A sharp, clever script with brilliant acting and a shocking twist.",
+    "Not a dull moment, the story is smart and powerful.",
+    "Wonderful cinematography, though the ending is disturbing."
+   ]
+  },
+  {
+   "n": "Oppenheimer",
+   "y": 2023,
+   "g": "Drama",
+   "d": "C. Nolan",
+   "b": 100,
+   "gr": 976,
+   "im": 8.3,
+   "rt": 93,
+   "mc": 89,
+   "au": 91,
+   "rn": 180,
+   "os": 7,
+   "rev": [
+    "Amazing performance, a gripping story and an outstanding score.",
+    "Too long and the plot feels slow, but the acting is superb.",
+    "Powerful, intense and beautifully shot visuals."
+   ]
+  },
+  {
+   "n": "Dune: Part Two",
+   "y": 2024,
+   "g": "Sci-Fi",
+   "d": "D. Villeneuve",
+   "b": 190,
+   "gr": 714,
+   "im": 8.5,
+   "rt": 92,
+   "mc": 79,
+   "au": 95,
+   "rn": 166,
+   "os": 2,
+   "rev": [
+    "Epic visuals and a spectacular score, truly stunning.",
+    "The story is slow and a little boring, yet the effects are great.",
+    "Excellent cast, amazing world and a satisfying plot."
+   ]
+  }
+ ],
+ "pool": [
+  {
+   "n": "Avatar",
+   "y": 2009,
+   "g": "Sci-Fi",
+   "d": "J. Cameron",
+   "b": 237,
+   "gr": 2923,
+   "im": 7.9,
+   "rt": 81,
+   "mc": 83,
+   "au": 82,
+   "rn": 162,
+   "os": 3
+  },
+  {
+   "n": "Titanic",
+   "y": 1997,
+   "g": "Romance",
+   "d": "J. Cameron",
+   "b": 200,
+   "gr": 2264,
+   "im": 7.9,
+   "rt": 88,
+   "mc": 75,
+   "au": 90,
+   "rn": 194,
+   "os": 11
+  },
+  {
+   "n": "The Matrix",
+   "y": 1999,
+   "g": "Sci-Fi",
+   "d": "Wachowskis",
+   "b": 63,
+   "gr": 467,
+   "im": 8.7,
+   "rt": 83,
+   "mc": 73,
+   "au": 85,
+   "rn": 136,
+   "os": 4
+  },
+  {
+   "n": "Joker",
+   "y": 2019,
+   "g": "Drama",
+   "d": "T. Phillips",
+   "b": 55,
+   "gr": 1079,
+   "im": 8.4,
+   "rt": 69,
+   "mc": 59,
+   "au": 88,
+   "rn": 122,
+   "os": 2
+  },
+  {
+   "n": "Everything Everywhere All at Once",
+   "y": 2022,
+   "g": "Sci-Fi",
+   "d": "Daniels",
+   "b": 25,
+   "gr": 143,
+   "im": 7.8,
+   "rt": 93,
+   "mc": 81,
+   "au": 83,
+   "rn": 139,
+   "os": 7
+  },
+  {
+   "n": "Barbie",
+   "y": 2023,
+   "g": "Comedy",
+   "d": "G. Gerwig",
+   "b": 145,
+   "gr": 1446,
+   "im": 6.8,
+   "rt": 88,
+   "mc": 80,
+   "au": 83,
+   "rn": 114,
+   "os": 1
+  },
+  {
+   "n": "Mad Max: Fury Road",
+   "y": 2015,
+   "g": "Action",
+   "d": "G. Miller",
+   "b": 150,
+   "gr": 380,
+   "im": 8.1,
+   "rt": 97,
+   "mc": 90,
+   "au": 86,
+   "rn": 120,
+   "os": 6
+  },
+  {
+   "n": "Get Out",
+   "y": 2017,
+   "g": "Horror",
+   "d": "J. Peele",
+   "b": 4.5,
+   "gr": 255,
+   "im": 7.7,
+   "rt": 98,
+   "mc": 85,
+   "au": 86,
+   "rn": 104,
+   "os": 1
+  },
+  {
+   "n": "La La Land",
+   "y": 2016,
+   "g": "Musical",
+   "d": "D. Chazelle",
+   "b": 30,
+   "gr": 448,
+   "im": 8,
+   "rt": 91,
+   "mc": 94,
+   "au": 81,
+   "rn": 128,
+   "os": 6
+  },
+  {
+   "n": "Gladiator",
+   "y": 2000,
+   "g": "Action",
+   "d": "R. Scott",
+   "b": 103,
+   "gr": 460,
+   "im": 8.5,
+   "rt": 80,
+   "mc": 64,
+   "au": 87,
+   "rn": 155,
+   "os": 5
+  }
+ ],
+ "pb": [
+  "Brilliant acting and a gripping story.",
+  "Stunning visuals with an amazing score.",
+  "A clever script, powerful performance and excellent ending.",
+  "Beautiful cinematography and a moving story.",
+  "Great cast and a spectacular soundtrack."
+ ],
+ "nb": [
+  "The plot is slow and a bit boring.",
+  "Confusing story and a weak ending, but great visuals.",
+  "Too long, and the script feels messy.",
+  "The acting was bad and the music was dull."
+ ]
+}

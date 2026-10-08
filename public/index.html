@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>CineMetrics – Movie Comparison Dashboard</title>
+<meta name="description" content="Movie comparison dashboard with audience sentiment analytics.">
+<meta property="og:title" content="CineMetrics – Movie Comparison Dashboard">
+<meta name="theme-color" content="#c2410c">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🎬%3C/text%3E%3C/svg%3E">
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);--bg:#f6f4ef;--card:#fff;--tx:#1c1b1a;--mu:#6b6861;--ac:#c2410c;--bd:#e3dfd6;--c1:#c2410c;--c2:#0f766e;--c3:#6d28d9;--g:#15803d;--r:#b91c1c}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#14130f;--card:#1f1d18;--tx:#f1eee6;--mu:#a29d90;--ac:#fb923c;--bd:#35322a;--c1:#fb923c;--c2:#2dd4bf;--c3:#a78bfa;--g:#4ade80;--r:#f87171}}
+:root[data-theme=dark]{--bg:#14130f;--card:#1f1d18;--tx:#f1eee6;--mu:#a29d90;--ac:#fb923c;--bd:#35322a;--c1:#fb923c;--c2:#2dd4bf;--c3:#a78bfa;--g:#4ade80;--r:#f87171}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.5 Georgia,'Times New Roman',serif}
+h1,h2,h3,nav,button,.lb,th{font-family:system-ui,-apple-system,'Segoe UI',sans-serif}
+header{padding:28px 18px 10px;max-width:1000px;margin:auto}
+h1{margin:0;font-size:30px;letter-spacing:-.5px}h1 span{color:var(--ac)}
+header p{color:var(--mu);margin:6px 0 0}
+nav{position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);z-index:5;display:flex;gap:6px;overflow-x:auto;padding:10px 18px;max-width:1000px;margin:auto;border-bottom:1px solid var(--bd)}
+nav button{border:1px solid var(--bd);background:var(--card);color:var(--tx);padding:8px 14px;border-radius:99px;cursor:pointer;white-space:nowrap;font-size:14px}
+nav button.on{background:var(--ac);color:#fff;border-color:var(--ac)}
+main{max-width:1000px;margin:auto;padding:16px 18px 50px}
+section{display:block}h4{margin:12px 0 4px;font:600 12px system-ui;text-transform:uppercase;color:var(--mu);letter-spacing:.5px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:16px;margin-bottom:16px}
+h2{margin:0 0 4px;font-size:21px}h3{margin:0 0 10px;font-size:16px}
+.sub{color:var(--mu);margin:0 0 14px;font-size:14px}
+.grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(290px,1fr))}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.chip{padding:6px 12px;border-radius:99px;border:2px solid var(--bd);background:var(--card);color:var(--tx);cursor:pointer;font:13px system-ui}
+.chip.on{color:#fff}
+.tw{overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{padding:8px 10px;text-align:left;border-bottom:1px solid var(--bd);white-space:nowrap}th{font-size:12px;text-transform:uppercase;color:var(--mu);letter-spacing:.5px}
+.win{font-weight:700;color:var(--g)}
+.kpis{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));margin-bottom:16px}
+.kpi{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:12px}.kpi b{display:block;font:700 24px system-ui}.kpi small{color:var(--mu);font-family:system-ui}
+.bar{display:flex;align-items:center;gap:8px;margin:5px 0;font:13px system-ui}.bar i{display:block;height:14px;border-radius:4px;background:var(--ac)}.bar span:first-child{width:92px;flex:none}
+input{border:1px solid var(--bd);border-radius:8px;padding:8px;background:var(--bg);color:var(--tx);font:13px system-ui;width:100%}.btn.alt{background:var(--card);color:var(--tx);border:1px solid var(--bd)}textarea{width:100%;min-height:80px;border:1px solid var(--bd);border-radius:10px;padding:10px;background:var(--bg);color:var(--tx);font:14px Georgia,serif}
+.btn{background:var(--ac);color:#fff;border:0;border-radius:8px;padding:8px 16px;cursor:pointer;font:600 14px system-ui;margin-top:8px}
+.tag{display:inline-block;padding:2px 9px;border-radius:99px;font:600 12px system-ui;color:#fff}
+.rev{border-left:3px solid var(--bd);padding:4px 10px;margin:8px 0;font-size:14px}
+.ft{text-align:center;color:var(--mu);font:12px system-ui;padding:20px}
+svg text{fill:var(--mu);font:11px system-ui}
+</style></head><body>
+<header><h1>Cine<span>Metrics</span></h1>
+<p>A movie comparison dashboard with Social Text &amp; Media Analytics. Figures are approximate and for academic demonstration.</p></header>
+<main>
+<section id="s0">
+<div class="card"><h2>Compare Movies</h2><p class="sub">Select 2–3 titles. Best value per metric is highlighted.</p><div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px"><input id="nm" list="dl" placeholder="Enter a movie name…" autocomplete="off" style="width:220px;flex:1 1 180px"><datalist id="dl"></datalist><button class="btn" style="margin:0" id="rnd">Add movie</button><button class="btn alt" style="margin:0" id="cst">＋ Add custom film</button><button class="btn alt" style="margin:0" id="rst">Reset added</button><button class="btn alt" style="margin:0" id="imp" title="Bulk-add films from a CSV file">Import films (CSV)</button><input type="file" id="impf" accept=".csv,.tsv,.txt" hidden><button class="btn alt" style="margin:0;display:none" id="sv">💾 Save comparison</button></div>
+<div style="margin-bottom:8px"><span id="mode" class="tag" style="background:var(--mu)">Checking backend…</span></div>
+<div id="msg" class="sub" role="status"></div>
+<div id="form" style="display:none;margin-bottom:14px"><div style="display:grid;gap:8px;grid-template-columns:repeat(auto-fit,minmax(120px,1fr))">
+<input id="f_n" placeholder="Title"><input id="f_y" type="number" placeholder="Year"><input id="f_g" placeholder="Genre"><input id="f_d" placeholder="Director"><input id="f_b" type="number" placeholder="Budget $M"><input id="f_gr" type="number" placeholder="Gross $M"><input id="f_im" type="number" step=".1" placeholder="IMDb 0-10"><input id="f_rt" type="number" placeholder="RT % 0-100"><input id="f_mc" type="number" placeholder="Metacritic"><input id="f_au" type="number" placeholder="Audience %"><input id="f_rn" type="number" placeholder="Runtime min"><input id="f_os" type="number" placeholder="Oscars"></div>
+<textarea id="f_rev" placeholder="Optional: paste reviews, one per line (sample reviews are generated if empty)" style="margin-top:8px"></textarea><button class="btn" id="fs">Save film</button></div>
+<div class="chips" id="chips"></div>
+<div class="tw"><table id="tbl"></table></div></div>
+<div class="grid"><div class="card"><h3>Score radar (0–100)</h3><div id="radar"></div></div>
+<div class="card"><h3>Return on investment (gross ÷ budget)</h3><div id="roi"></div><h3 style="margin-top:18px">Box office ($M)</h3><div id="gross"></div></div></div>
+<div class="card" id="histcard" style="display:none"><h3>Saved comparisons (stored in the database)</h3><div id="hist"></div></div>
+</section>
+
+<section id="s1">
+<div class="card"><h2>Audience Analytics</h2><p class="sub">Sentiment, aspect scores (acting, plot, visuals, music), keywords and reviews for each film selected above, scored by a lexicon-based text-analytics engine with negation handling.</p><div class="grid" id="an"></div></div>
+<div class="card"><h3>Analyze your own text</h3><textarea id="inp" placeholder="Paste any movie review or tweet...">The acting was brilliant but the plot felt slow and not very engaging. Stunning visuals though!</textarea><br><button class="btn" id="go">Analyze text</button><div id="out" style="margin-top:10px"></div></div>
+</section>
+
+</main>
+<div class="ft">CineMetrics · Final-year project · Data illustrative; sample reviews are original.</div>
+<script>
+const $=s=>document.querySelector(s),COL=['var(--c1)','var(--c2)','var(--c3)'];
+const M=[
+{n:'Inception',y:2010,g:'Sci-Fi',d:'C. Nolan',b:160,gr:836,im:8.8,rt:87,mc:74,au:91,rn:148,os:4},
+{n:'Interstellar',y:2014,g:'Sci-Fi',d:'C. Nolan',b:165,gr:773,im:8.7,rt:73,mc:74,au:86,rn:169,os:1},
+{n:'The Dark Knight',y:2008,g:'Action',d:'C. Nolan',b:185,gr:1006,im:9.0,rt:94,mc:84,au:94,rn:152,os:2},
+{n:'Parasite',y:2019,g:'Thriller',d:'Bong J.',b:15.5,gr:263,im:8.5,rt:99,mc:97,au:90,rn:132,os:4},
+{n:'Oppenheimer',y:2023,g:'Drama',d:'C. Nolan',b:100,gr:976,im:8.3,rt:93,mc:89,au:91,rn:180,os:7},
+{n:'Dune: Part Two',y:2024,g:'Sci-Fi',d:'D. Villeneuve',b:190,gr:714,im:8.5,rt:92,mc:79,au:95,rn:166,os:2}];
+const R=[
+['Brilliant acting and a clever plot. The visuals and music are stunning.','The ending was confusing but the story kept me hooked.','Slow middle act, yet the score is amazing.'],
+['Beautiful visuals and a moving score, but the plot is overlong and confusing.','The acting was powerful and emotional, a great story about love.','Some dialogue is bad and hard to hear.'],
+['Incredible performance by the cast, a dark and gripping story.','Great action and superb cinematography, not boring at all.','The plot is a bit messy but the acting is excellent.'],
+['A sharp, clever script with brilliant acting and a shocking twist.','Not a dull moment, the story is smart and powerful.','Wonderful cinematography, though the ending is disturbing.'],
+['Amazing performance, a gripping story and an outstanding score.','Too long and the plot feels slow, but the acting is superb.','Powerful, intense and beautifully shot visuals.'],
+['Epic visuals and a spectacular score, truly stunning.','The story is slow and a little boring, yet the effects are great.','Excellent cast, amazing world and a satisfying plot.']];
+const P='brilliant clever stunning beautiful moving powerful incredible great amazing superb excellent outstanding gripping wonderful smart epic spectacular satisfying love emotional intense sharp good best hooked'.split(' '),
+N='confusing slow boring messy bad dull shocking disturbing overlong long hard weak poor worst dark'.split(' '),NEG=['not','never','no'],
+ST='the a an and but of to is was it in that this for with yet though some very too at be as by so are were its'.split(' ');
+const ASP={acting:['acting','performance','cast'],plot:['plot','story','script','ending'],visuals:['visuals','cinematography','effects','shot'],music:['score','music']};
+const esc=t=>String(t).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const tok=t=>t.toLowerCase().replace(/[^a-z' ]/g,' ').split(/\s+/).filter(Boolean);
+function sent(t){let w=tok(t),s=0,c=0;w.forEach((x,i)=>{let v=P.includes(x)?1:N.includes(x)?-1:0;if(v){if(NEG.includes(w[i-1]))v=-v;s+=v;c++}});return c?s/c:0}
+const pct=s=>Math.round((s+1)*50);
+const lab=p=>p>=60?['Positive','var(--g)']:p>=40?['Mixed','#b45309']:['Negative','var(--r)'];
+function prep(m,rev){m.rev=rev;m.roi=m.gr/m.b;m.sent=pct(rev.reduce((a,r)=>a+sent(r),0)/rev.length);return m}
+M.forEach((m,i)=>prep(m,R[i]));
+let sel=[0,3],asel=0;
+function chips(){$('#chips').innerHTML=M.map((m,i)=>{let k=sel.indexOf(i);return `<button class="chip ${k>=0?'on':''}" style="${k>=0?`background:${COL[k]};border-color:${COL[k]}`:''}" data-i="${i}">${esc(m.n)}</button>`}).join('')}
+$('#chips').onclick=e=>{let i=e.target.dataset.i;if(i==null)return;i=+i;let k=sel.indexOf(i);if(k>=0){if(sel.length>2)sel.splice(k,1)}else{if(sel.length==3)sel.shift();sel.push(i)}drawCmp()};
+const rows=[['Year','y',0],['Genre','g',0],['Director','d',0],['Budget ($M)','b',-1],['Gross ($M)','gr',1],['ROI (x)','roi',1,v=>v.toFixed(1)+'x'],['IMDb','im',1],['Rotten Tomatoes %','rt',1],['Metacritic','mc',1],['Audience %','au',1],['Sentiment (NLP)','sent',1],['Runtime (min)','rn',0],['Oscars','os',1]];
+function bars(el,k,f=v=>v.toFixed(1)){let mx=Math.max(...sel.map(i=>M[i][k]));$(el).innerHTML=sel.map((i,j)=>`<div class="bar"><span>${esc(M[i].n)}</span><i style="width:${M[i][k]/mx*55}%;background:${COL[j]}"></i><b>${f(M[i][k])}</b></div>`).join('')}
+function radar(){const ax=[['IMDb',m=>m.im*10],['Critics',m=>m.rt],['Metacritic',m=>m.mc],['Audience',m=>m.au],['Sentiment',m=>m.sent],['ROI',m=>Math.min(100,m.roi*10)]];
+let c=150,r=100,pt=(k,v)=>{let a=Math.PI*2*k/6-Math.PI/2;return[c+Math.cos(a)*r*v/100,c+Math.sin(a)*r*v/100].map(x=>x.toFixed(1))};
+let s=`<svg viewBox="0 0 300 300" width="100%" style="max-width:360px">`;
+[25,50,75,100].forEach(l=>s+=`<polygon points="${ax.map((_,k)=>pt(k,l)).join(' ')}" fill="none" stroke="var(--bd)"/>`);
+ax.forEach((a,k)=>{let[x,y]=pt(k,118);s+=`<text x="${x}" y="${y}" text-anchor="middle">${a[0]}</text>`});
+sel.forEach((i,j)=>{s+=`<polygon points="${ax.map((a,k)=>pt(k,a[1](M[i]))).join(' ')}" fill="${COL[j]}" fill-opacity=".2" stroke="${COL[j]}" stroke-width="2"/>`});
+$('#radar').innerHTML=s+'</svg>'}
+function drawCmp(){chips();if(typeof dl=='function'&&typeof POOL!='undefined')dl();
+$('#tbl').innerHTML='<tr><th>Metric</th>'+sel.map((i,j)=>`<th style="color:${COL[j]}">${esc(M[i].n)}</th>`).join('')+'</tr>'+rows.map(([l,k,d,f])=>{let v=sel.map(i=>M[i][k]),best=d?(d>0?Math.max(...v):Math.min(...v)):null;return `<tr><td>${l}</td>`+v.map(x=>`<td class="${x===best&&new Set(v).size>1?'win':''}">${esc(f?f(x):x)}</td>`).join('')+'</tr>'}).join('');
+radar();bars('#roi','roi',v=>v.toFixed(1)+'x');bars('#gross','gr',v=>'$'+v);drawAn()}
+function drawAn(){$('#an').innerHTML=sel.map((i,j)=>{const m=M[i],l=lab(m.sent),f={};
+ tok(m.rev.join(' ')).forEach(w=>{if(!ST.includes(w)&&w.length>3)f[w]=(f[w]||0)+1});
+ const top=Object.entries(f).sort((a,b)=>b[1]-a[1]||a[0].localeCompare(b[0])).slice(0,6),mx=top.length?top[0][1]:1;
+ const asp=Object.entries(ASP).map(([a,ks])=>{const rs=m.rev.filter(r=>ks.some(k=>tok(r).includes(k)));if(!rs.length)return `<div class="bar"><span>${a}</span><em style="color:var(--mu)">not mentioned</em></div>`;const p=pct(rs.reduce((x,r)=>x+sent(r),0)/rs.length);return `<div class="bar"><span>${a}</span><i style="width:${p*.6}%;background:${lab(p)[1]}"></i><b>${p}</b></div>`}).join('');
+ const kw=top.map(([w,c])=>`<div class="bar"><span>${esc(w)}</span><i style="width:${c/mx*60}%;background:${P.includes(w)?'var(--g)':N.includes(w)?'var(--r)':'var(--mu)'}"></i><b>${c}</b></div>`).join('');
+ const rv=m.rev.slice(0,3).map(r=>{const p=pct(sent(r)),q=lab(p);return `<div class="rev">“${esc(r)}” <span class="tag" style="background:${q[1]}">${q[0]} ${p}</span></div>`}).join('');
+ return `<div style="border:1px solid var(--bd);border-top:4px solid ${COL[j]};border-radius:12px;padding:14px;background:var(--bg)"><h3 style="color:${COL[j]}">${esc(m.n)}</h3><div class="kpis" style="grid-template-columns:1fr 1fr"><div class="kpi"><b style="color:${l[1]}">${m.sent}</b><small>Sentiment · ${l[0]}</small></div><div class="kpi"><b>${m.rev.length}</b><small>Reviews analysed</small></div></div><h4>Aspect sentiment</h4>${asp}<h4>Top keywords</h4>${kw}<h4>Sample reviews</h4>${rv}</div>`}).join('')}
+$('#go').onclick=()=>{let t=$('#inp').value;if(!t.trim()){$('#out').textContent='Enter some text to analyze.';return}let p=pct(sent(t)),l=lab(p),w=tok(t);$('#out').innerHTML=`<span class="tag" style="background:${l[1]}">${l[0]} · ${p}/100</span> <span class="sub">${w.length} words · positive cues: ${w.filter(x=>P.includes(x)).join(', ')||'none'} · negative cues: ${w.filter(x=>N.includes(x)).join(', ')||'none'}</span>`};
+const Q=(n,y,g,d,b,gr,im,rt,mc,au,rn,os)=>({n,y,g,d,b,gr,im,rt,mc,au,rn,os});
+const CSV=`Inception|2010|Sci-Fi|C. Nolan|160|836|8.8|87|74|91|148|4
+Interstellar|2014|Sci-Fi|C. Nolan|165|773|8.7|73|74|86|169|1
+The Dark Knight|2008|Action|C. Nolan|185|1006|9|94|84|94|152|2
+Parasite|2019|Thriller|Bong J.|15.5|263|8.5|99|97|90|132|4
+Oppenheimer|2023|Drama|C. Nolan|100|976|8.3|93|89|91|180|7
+Dune: Part Two|2024|Sci-Fi|D. Villeneuve|190|714|8.5|92|79|95|166|2
+Avatar|2009|Sci-Fi|J. Cameron|237|2923|7.9|81|83|82|162|3
+Titanic|1997|Romance|J. Cameron|200|2264|7.9|88|75|90|194|11
+The Matrix|1999|Sci-Fi|Wachowskis|63|467|8.7|83|73|85|136|4
+Joker|2019|Drama|T. Phillips|55|1079|8.4|69|59|88|122|2
+Everything Everywhere All at Once|2022|Sci-Fi|Daniels|25|143|7.8|93|81|83|139|7
+Barbie|2023|Comedy|G. Gerwig|145|1446|6.8|88|80|83|114|1
+Mad Max: Fury Road|2015|Action|G. Miller|150|380|8.1|97|90|86|120|6
+Get Out|2017|Horror|J. Peele|4.5|255|7.7|98|85|86|104|1
+La La Land|2016|Musical|D. Chazelle|30|448|8|91|94|81|128|6
+Gladiator|2000|Action|R. Scott|103|460|8.5|80|64|87|155|5
+The Godfather|1972|Crime|F. F. Coppola|6.5|250|9.2|97|100|98|175|3
+The Godfather Part II|1974|Crime|F. F. Coppola|13|93|9.0|96|90|97|202|6
+Pulp Fiction|1994|Crime|Q. Tarantino|8|214|8.9|92|95|96|154|1
+Forrest Gump|1994|Drama|R. Zemeckis|55|678|8.8|71|82|95|142|6
+Fight Club|1999|Drama|D. Fincher|63|101|8.8|79|66|96|139|0
+The Shawshank Redemption|1994|Drama|F. Darabont|25|29|9.3|89|82|98|142|0
+Schindler's List|1993|Drama|S. Spielberg|22|322|9.0|98|95|97|195|7
+The Lord of the Rings: The Fellowship of the Ring|2001|Fantasy|P. Jackson|93|898|8.9|91|92|95|178|4
+The Lord of the Rings: The Two Towers|2002|Fantasy|P. Jackson|94|947|8.8|95|87|95|179|2
+The Lord of the Rings: The Return of the King|2003|Fantasy|P. Jackson|94|1146|9.0|93|94|86|201|11
+Star Wars: A New Hope|1977|Sci-Fi|G. Lucas|11|775|8.6|93|90|96|121|6
+The Empire Strikes Back|1980|Sci-Fi|I. Kershner|33|538|8.7|95|82|97|124|2
+Jurassic Park|1993|Sci-Fi|S. Spielberg|63|1046|8.2|91|68|91|127|3
+Terminator 2: Judgment Day|1991|Sci-Fi|J. Cameron|102|520|8.6|93|75|94|137|4
+Alien|1979|Horror|R. Scott|11|104|8.5|93|89|94|117|1
+Back to the Future|1985|Sci-Fi|R. Zemeckis|19|383|8.5|93|87|95|116|1
+E.T. the Extra-Terrestrial|1982|Sci-Fi|S. Spielberg|10.5|793|7.9|99|92|72|115|4
+Avengers: Endgame|2019|Action|Russo Brothers|356|2799|8.4|94|78|90|181|0
+Avengers: Infinity War|2018|Action|Russo Brothers|321|2052|8.4|85|68|91|149|0
+The Avengers|2012|Action|J. Whedon|220|1519|8.0|91|69|91|143|0
+Black Panther|2018|Action|R. Coogler|200|1349|7.3|96|88|79|134|3
+Spider-Man: No Way Home|2021|Action|J. Watts|200|1922|8.2|93|71|98|148|0
+Iron Man|2008|Action|J. Favreau|140|585|7.9|94|79|91|126|0
+Top Gun: Maverick|2022|Action|J. Kosinski|170|1496|8.2|96|78|99|130|1
+Avatar: The Way of Water|2022|Sci-Fi|J. Cameron|350|2321|7.6|76|67|92|192|1
+Frozen|2013|Animation|C. Buck, J. Lee|150|1280|7.4|90|75|85|102|2
+Toy Story|1995|Animation|J. Lasseter|30|394|8.3|100|95|92|81|0
+Toy Story 3|2010|Animation|L. Unkrich|200|1067|8.3|98|92|89|103|2
+Finding Nemo|2003|Animation|A. Stanton|94|941|8.2|99|90|86|100|1
+The Lion King|1994|Animation|Allers, Minkoff|45|968|8.5|93|88|93|88|2
+Up|2009|Animation|P. Docter|175|735|8.3|98|88|89|96|2
+Inside Out|2015|Animation|P. Docter|175|858|8.1|98|94|87|95|1
+Spirited Away|2001|Animation|H. Miyazaki|19|395|8.6|97|96|96|125|1
+Coco|2017|Animation|L. Unkrich|175|807|8.4|97|81|94|105|2
+Shrek|2001|Animation|A. Adamson|60|488|7.9|88|84|90|90|1
+The Incredibles|2004|Animation|B. Bird|92|633|8.0|97|90|75|115|2
+Zootopia|2016|Animation|B. Howard|150|1025|8.0|93|78|92|108|1
+Spider-Man: Into the Spider-Verse|2018|Animation|Persichetti et al.|90|384|8.4|97|87|93|117|1
+Saving Private Ryan|1998|War|S. Spielberg|70|482|8.6|93|91|95|169|5
+Braveheart|1995|Drama|M. Gibson|72|213|8.3|78|68|94|178|5
+Goodfellas|1990|Crime|M. Scorsese|25|47|8.7|96|91|97|145|1
+The Departed|2006|Crime|M. Scorsese|90|291|8.5|91|85|94|151|4
+Se7en|1995|Thriller|D. Fincher|33|327|8.6|83|65|95|127|0
+The Silence of the Lambs|1991|Thriller|J. Demme|19|272|8.6|95|85|95|118|5
+The Prestige|2006|Thriller|C. Nolan|40|110|8.5|76|66|92|130|0
+Memento|2000|Thriller|C. Nolan|9|40|8.4|93|80|94|113|0
+Dunkirk|2017|War|C. Nolan|100|527|7.8|92|94|81|106|3
+Tenet|2020|Action|C. Nolan|200|365|7.3|69|69|76|150|1
+Batman Begins|2005|Action|C. Nolan|150|373|8.2|84|70|94|140|0
+The Dark Knight Rises|2012|Action|C. Nolan|250|1081|8.4|87|78|90|164|0
+Gravity|2013|Sci-Fi|A. Cuarón|100|723|7.7|96|96|79|91|7
+Blade Runner 2049|2017|Sci-Fi|D. Villeneuve|150|260|8.0|88|81|81|164|2
+Dune|2021|Sci-Fi|D. Villeneuve|165|407|8.0|83|74|90|155|6
+Arrival|2016|Sci-Fi|D. Villeneuve|47|203|7.9|94|81|82|116|1
+Ex Machina|2014|Sci-Fi|A. Garland|15|37|7.7|92|78|86|108|1
+The Martian|2015|Sci-Fi|R. Scott|108|630|8.0|91|80|91|144|0
+Whiplash|2014|Drama|D. Chazelle|3.3|50|8.5|94|88|94|106|3
+Moonlight|2016|Drama|B. Jenkins|1.5|65|7.4|98|99|79|111|3
+The Social Network|2010|Drama|D. Fincher|40|225|7.8|96|95|87|120|3
+Birdman|2014|Comedy|A. G. Iñárritu|18|103|7.7|91|87|78|119|4
+The Revenant|2015|Adventure|A. G. Iñárritu|135|533|8.0|78|76|85|156|3
+Django Unchained|2012|Western|Q. Tarantino|100|426|8.5|87|81|92|165|2
+Inglourious Basterds|2009|War|Q. Tarantino|70|321|8.4|89|69|88|153|1
+Once Upon a Time in Hollywood|2019|Comedy|Q. Tarantino|90|377|7.6|85|83|70|161|2
+Kill Bill: Vol. 1|2003|Action|Q. Tarantino|30|180|8.2|85|69|82|111|0
+No Country for Old Men|2007|Thriller|Coen Brothers|25|171|8.2|93|91|86|122|4
+Amélie|2001|Romance|J. Jeunet|10|174|8.3|89|69|90|122|0
+Life of Pi|2012|Adventure|A. Lee|120|609|7.9|87|79|84|127|4
+Slumdog Millionaire|2008|Drama|D. Boyle|15|378|8.0|91|84|87|120|8
+Train to Busan|2016|Horror|Yeon S.|8.5|98|7.6|95|72|84|118|0
+Oldboy|2003|Thriller|Park C.|3|15|8.4|82|77|91|120|0
+The Grand Budapest Hotel|2014|Comedy|W. Anderson|25|174|8.1|92|88|88|99|4
+Knives Out|2019|Mystery|R. Johnson|40|312|7.9|97|82|92|130|0
+A Quiet Place|2018|Horror|J. Krasinski|17|341|7.5|96|82|83|90|0
+Hereditary|2018|Horror|A. Aster|10|80|7.3|89|87|66|127|0
+The Conjuring|2013|Horror|J. Wan|20|319|7.5|86|68|85|112|0
+Skyfall|2012|Action|S. Mendes|200|1109|7.8|92|81|86|143|2
+Casino Royale|2006|Action|M. Campbell|150|617|8.0|94|80|87|144|0
+Mission: Impossible - Fallout|2018|Action|C. McQuarrie|178|791|7.7|97|86|88|147|0
+John Wick|2014|Action|C. Stahelski|20|89|7.4|86|68|85|101|0
+Fast Five|2011|Action|J. Lin|125|626|7.3|78|66|86|131|0
+Wonder Woman|2017|Action|P. Jenkins|149|822|7.3|93|76|88|141|0
+Deadpool|2016|Action|T. Miller|58|782|8.0|85|65|90|108|0
+Guardians of the Galaxy|2014|Action|J. Gunn|170|773|8.0|92|76|92|121|0
+Harry Potter and the Sorcerer's Stone|2001|Fantasy|C. Columbus|125|1002|7.6|81|64|82|152|0
+Pirates of the Caribbean: The Curse of the Black Pearl|2003|Adventure|G. Verbinski|140|654|8.1|79|63|86|143|0
+Rocky|1976|Drama|J. Avildsen|1|225|8.1|93|70|70|119|3
+Casablanca|1942|Romance|M. Curtiz|1|10|8.5|99|100|95|102|3
+Psycho|1960|Horror|A. Hitchcock|0.8|50|8.5|96|97|95|109|0
+Citizen Kane|1941|Drama|O. Welles|0.8|1.6|8.3|99|100|90|119|1
+`;
+const POOL=CSV.trim().split('\n').map(l=>{const a=l.split('|');return Q(a[0],a[1],a[2],a[3],+a[4],+a[5],+a[6],+a[7],+a[8],+a[9],+a[10],+a[11])});
+const PB=['Brilliant acting and a gripping story.','Stunning visuals with an amazing score.','A clever script, powerful performance and excellent ending.','Beautiful cinematography and a moving story.','Great cast and a spectacular soundtrack.'],NB=['The plot is slow and a bit boring.','Confusing story and a weak ending, but great visuals.','Too long, and the script feels messy.','The acting was bad and the music was dull.'];
+const gen=au=>[0,1,2].map(()=>{let a=Math.random()*100<au?PB:NB;return a[Math.floor(Math.random()*a.length)]});
+let added=[],online=false;const msg=t=>$('#msg').textContent=t;
+const save=()=>{try{localStorage.setItem('cm_added',JSON.stringify(added))}catch(e){}};
+async function api(p,o={}){const r=await fetch('/api'+p,{method:o.method||'GET',headers:{'Content-Type':'application/json',...(o.h||{})},body:o.body?JSON.stringify(o.body):undefined});const j=await r.json().catch(()=>({}));if(!r.ok)throw Object.assign(new Error(j.error||'Request failed'),{status:r.status});return j}
+const setMode=()=>{const e=$('#mode');e.textContent=online?'● Database connected':'○ Offline mode (browser storage)';e.style.background=online?'var(--g)':'var(--mu)';$('#histcard').style.display=online?'block':'none';$('#sv').style.display=online?'inline-block':'none'};
+const idx=id=>M.findIndex(m=>m.id===id);
+const show=a=>{if(a.length>=2){sel=a.slice(0,3);asel=a[0]}};
+function pushFilm(f,select=true){prep(f,f.rev);M.push(f);if(select){if(sel.length==3)sel.shift();sel.push(M.length-1);asel=M.length-1}}
+async function loadFilms(){const l=await api('/films');M.length=0;l.films.forEach(f=>prep(f,f.rev)&&M.push(f))}
+async function addFilm(f){
+ if(online)pushFilm(await api('/films',{method:'POST',body:f}));
+ else{prep(f,f.rev&&f.rev.length?f.rev:gen(f.au));M.push(f);added.push(f);save();if(sel.length==3)sel.shift();sel.push(M.length-1);asel=M.length-1}
+ drawCmp();drawAn();hist()}
+async function hist(){if(!online)return;try{const l=(await api('/comparisons')).comparisons;$('#hist').innerHTML=l.length?l.map(c=>`<div class="rev"><button class="chip" data-c="${c.id}">Load #${c.id}</button> ${esc(c.films.map(f=>f.n).join(' vs '))} <span class="sub">· ${esc(c.kind)} · ${esc(c.created_at)}</span></div>`).join(''):'<p class="sub">No saved comparisons yet.</p>'}catch(e){}}
+async function loadCmp(id){const c=await api('/comparisons/'+id);c.films.forEach(f=>{if(idx(f.id)<0)pushFilm(f,false)});show(c.films.map(f=>idx(f.id)));drawCmp();drawAn()}
+$('#hist').onclick=e=>{if(e.target.dataset.c)loadCmp(e.target.dataset.c).catch(x=>msg(x.message))};
+let dlT;
+async function dl(q=''){q=String(q).trim().toLowerCase();let names;
+ if(online&&q.length>=2){try{names=(await api('/catalog/search?q='+encodeURIComponent(q))).results.map(r=>r.n)}catch(e){names=[]}}
+ else names=[...new Set([...M.map(m=>m.n),...POOL.map(p=>p.n)])].filter(n=>!q||n.toLowerCase().includes(q)).slice(0,20);
+ $('#dl').innerHTML=names.map(n=>`<option value="${esc(n)}">`).join('')}
+$('#nm').oninput=e=>{clearTimeout(dlT);dlT=setTimeout(()=>dl(e.target.value),150)};
+async function byName(){const q=$('#nm').value.trim(),ql=q.toLowerCase();if(!q)return msg('Please enter a movie name.');
+ let i=M.findIndex(m=>m.n.toLowerCase()==ql),isNew=false;
+ const openForm=()=>{$('#form').style.display='block';$('#f_n').value=q;$('#f_b').focus();msg('"'+q+'" is not in the catalog. Enter its details below to add it.')};
+ if(i<0){
+  if(online){try{const r=await api('/films/lookup',{method:'POST',body:{name:q}});i=idx(r.id);if(i<0){pushFilm(r);i=M.length-1;isNew=true}}catch(e){return e.status==404?openForm():msg(e.message)}}
+  else{const c=POOL.filter(p=>p.n.toLowerCase().includes(ql)),f=c.find(x=>x.n.toLowerCase()==ql)||(c.length==1?c[0]:null);
+   if(!f&&c.length>1)return msg('Several matches: '+c.slice(0,8).map(x=>x.n).join(', ')+'. Please be more specific.');
+   if(!f)return openForm();
+   i=M.findIndex(m=>m.n==f.n);if(i<0){await addFilm({...f});i=M.length-1;isNew=true}}}
+ if(!sel.includes(i)){if(sel.length==3)sel.shift();sel.push(i)}
+ $('#nm').value='';drawCmp();drawAn();if(online)hist();
+ msg(isNew?'Added "'+M[i].n+'" to the comparison.':'"'+M[i].n+'" is in the comparison.')}
+// ---- bulk import (CSV / TSV / pipe-separated) ----
+const IMP=[];
+function parseCSV(t){const d=t.split('\n',1)[0].includes('\t')?'\t':t.split('\n',1)[0].includes('|')?'|':',',rows=[];let r=[],c='',q=false;
+ for(let k=0;k<t.length;k++){const ch=t[k];
+  if(q){if(ch=='"'){if(t[k+1]=='"'){c+='"';k++}else q=false}else c+=ch}
+  else if(ch=='"')q=true;else if(ch==d){r.push(c);c=''}else if(ch=='\n'){r.push(c.replace(/\r$/,''));rows.push(r);r=[];c=''}else c+=ch}
+ if(c||r.length){r.push(c.replace(/\r$/,''));rows.push(r)}return rows}
+const AL={n:['title','name','movie','movie_title','original_title'],y:['year','release_year','release_date'],g:['genre','genres'],d:['director'],b:['budget'],gr:['gross','revenue','worldwide_gross'],im:['imdb','imdb_score','imdb_rating','vote_average','rating'],rt:['rt','rotten_tomatoes'],mc:['mc','metacritic','metascore'],au:['aud','audience','audience_score'],rn:['runtime','duration'],os:['oscars','oscar_wins']};
+function toFilms(rows){const hd=rows[0].map(x=>x.trim().toLowerCase().replace(/[^a-z0-9_]+/g,'_').replace(/^_|_$/g,'')),col={};
+ for(const k in AL){const ix=AL[k].map(a=>hd.indexOf(a)).find(x=>x>=0);if(ix!==undefined)col[k]=ix}
+ if(col.n===undefined||col.b===undefined||col.gr===undefined)throw new Error('The file needs columns: title, budget and gross (or revenue). Found: '+hd.join(', '));
+ const num=v=>parseFloat(String(v||'').replace(/[$,\s]/g,'')),mil=v=>v>100000?v/1e6:v;
+ return rows.slice(1).map(r=>{const g=k=>col[k]===undefined?'':(r[col[k]]||'').trim();let gn=g('g');if(gn[0]=='['){try{gn=JSON.parse(gn)[0].name||''}catch(e){gn=''}}
+  let im=num(g('im'));im=Number.isFinite(im)?(im<=10?im:im/10):7;const sc=Math.round(im*10);
+  return{n:g('n'),y:g('y').slice(0,4),g:gn.slice(0,30),d:g('d'),b:mil(num(g('b'))),gr:mil(num(g('gr'))),im:+im.toFixed(1),rt:num(g('rt'))||sc,mc:num(g('mc'))||sc,au:num(g('au'))||sc,rn:num(g('rn'))||120,os:num(g('os'))||0}}).filter(f=>f.n&&f.b>0&&f.gr>=0)}
+$('#imp').onclick=()=>$('#impf').click();
+$('#impf').onchange=async e=>{const file=e.target.files[0];e.target.value='';if(!file)return;
+ try{const fs=toFilms(parseCSV(await file.text()));if(!fs.length)return msg('No valid rows found (each needs a title, budget above 0 and gross).');
+  if(online){let h={};for(let t=0;t<2;t++){try{const r=await api('/catalog/import',{method:'POST',body:{films:fs.slice(0,50000)},h});msg('Imported '+r.imported+' films. The catalog now holds '+r.catalog+' films.');break}catch(x){if(x.status!=401||t)throw x;const tk=prompt('Admin token required to import into the shared database:');if(!tk)return;h={'x-admin-token':tk}}}}
+  else{const have=new Set(POOL.map(p=>p.n.toLowerCase()));let n=0;fs.forEach(f=>{if(!have.has(f.n.toLowerCase())){POOL.push(f);IMP.push(f);have.add(f.n.toLowerCase());n++}});
+   let kept=true;try{localStorage.setItem('cm_cat',JSON.stringify(IMP))}catch(x){kept=false}
+   msg('Imported '+n+' films into this browser'+(kept?'.':' (too large to keep after reload; use the backend for big files).'))}
+  dl($('#nm').value)}catch(x){msg(x.message)}};
+$('#rnd').onclick=byName;$('#nm').onkeydown=e=>{if(e.key=='Enter')byName()};
+$('#sv').onclick=async()=>{try{const c=await api('/comparisons',{method:'POST',body:{ids:sel.map(i=>M[i].id)}});msg('Saved #'+c.id+'. Share link: '+location.origin+'/?c='+c.id);hist()}catch(e){msg(e.message)}};
+$('#cst').onclick=()=>{let f=$('#form');f.style.display=f.style.display=='none'?'block':'none'};
+$('#fs').onclick=async()=>{const v=k=>$('#f_'+k).value.trim(),n=k=>parseFloat(v(k)),c=(x,a,b)=>Math.min(b,Math.max(a,x));
+if(!v('n'))return msg('Please enter a title.');if(M.some(m=>m.n.toLowerCase()==v('n').toLowerCase()))return msg('That film is already in the list.');
+if(!(n('b')>0)||!(n('gr')>=0))return msg('Budget must be above 0 and gross a number.');
+let rev=v('rev').split('\n').map(x=>x.trim()).filter(Boolean).slice(0,12);
+try{await addFilm({n:v('n').slice(0,40),y:n('y')||'—',g:v('g')||'—',d:v('d')||'—',b:n('b'),gr:n('gr'),im:c(n('im')||7,0,10),rt:c(n('rt')||70,0,100),mc:c(n('mc')||70,0,100),au:c(n('au')||70,0,100),rn:n('rn')||120,os:n('os')||0,rev});
+document.querySelectorAll('#form input,#form textarea').forEach(e=>e.value='');$('#form').style.display='none';msg('Custom film added.')}catch(e){msg(e.message)}};
+$('#rst').onclick=async()=>{try{if(online){try{await api('/films',{method:'DELETE'})}catch(e){if(e.status!=401)throw e;const t=prompt('Admin token required to reset the shared database:');if(!t)return;await api('/films',{method:'DELETE',h:{'x-admin-token':t}})}await loadFilms();hist()}else{added=[];M.length=6;save()}
+sel=sel.filter(i=>i<M.length);if(sel.length<2)sel=[0,3];asel=0;drawCmp();drawAn();msg('Reset to the original six films.')}catch(e){msg(e.message)}};
+(async()=>{try{const h=await api('/health');if(!h.ok)throw 0;await loadFilms();online=true;if(h.live_lookup)document.querySelector('.ft').insertAdjacentHTML('beforeend','<br>Live movie lookup uses the TMDB API but is not endorsed or certified by TMDB.')}catch(e){online=false;try{JSON.parse(localStorage.getItem('cm_cat')||'[]').forEach(f=>{POOL.push(f);IMP.push(f)})}catch(e){}try{JSON.parse(localStorage.getItem('cm_added')||'[]').forEach(f=>{prep(f,f.rev);M.push(f);added.push(f)})}catch(e){}}
+setMode();const c=new URLSearchParams(location.search).get('c');if(online&&c)try{await loadCmp(c)}catch(e){msg(e.message)}
+drawCmp();drawAn();hist()})();
+</script></body></html>
